@@ -60,9 +60,12 @@ public class Program
                 ValidateAudience = true,
                 ValidAudience = authenticationConfiguration.Jwt.Audience,
                 ValidIssuer = authenticationConfiguration.Jwt.Issuer,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationConfiguration.Jwt.Key))
+                ValidateLifetime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationConfiguration.Jwt.Key)),
+                ClockSkew = TimeSpan.Zero
             };
         });
+
         services.AddInfrastructures(configuration);
     }
 
@@ -80,7 +83,6 @@ public class Program
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
-
 
         app.MapControllers();
     }
